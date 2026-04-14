@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# ============================================================
+# IP-SHIELD: prepare-commit-msg hook
+# ============================================================
+# Reminds the developer to include IP documentation tags in
+# commit messages. Appends a commented-out template if no
+# [HUMAN] tag is present yet. Comments are stripped by git,
+# so they do not end up in the final commit message.
+#
+# Non-blocking: never fails the commit. Purely advisory.
+# ============================================================
+
+set -eu
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="${2:-}"
+
+# Skip for merges, squashes, amends, reverts, cherry-picks — the
+# message already exists and the developer is not composing fresh.
+case "$COMMIT_SOURCE" in
+  merge|squash|commit) exit 0 ;;
+esac
+
+# If the message already contains an IP tag, do nothing.
+if grep -qE '^\[(HUMAN|AI-ROLE|IP-SCORE)\]:' "$COMMIT_MSG_FILE"; then
+  exit 0
+fi
+
+# Append a commented template — git strips comment lines on commit.
+cat >> "$COMMIT_MSG_FILE" <<'EOF'
+
+# ── IP-SHIELD reminder ──────────────────────────────────────
+# Add IP documentation tags below (remove leading "# " to keep).
+# See CLAUDE_MD_IP_SECTION.md for the full format.
+#
+# [HUMAN]: <what you decided, why, and one rejected alternative —
+#          ≥40 words for HIGH, ≥30 for MEDIUM; waived if [SPEC-REF]
+#          points to a spec with a Decision Log>
+# [AI-ROLE]: <how AI assisted — tool, not creator>
+# [CREATIVE-DECISIONS]: <specific design choices with reasoning>
+# [IP-SCORE]: HIGH | MEDIUM | LOW
+# [ALTERNATIVES-REJECTED]: <what was considered and why rejected>
+# [SPEC-REF]: <optional: link to spec/ADR that drove this change>
+#
+# Co-Authored-By: <AI model> <noreply@provider.com>
+# ────────────────────────────────────────────────────────────
+EOF
+
+exit 0
