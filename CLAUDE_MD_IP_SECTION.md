@@ -3,6 +3,7 @@
 # ============================================================
 # Füge diesen Abschnitt in deine CLAUDE.md ein (Projekt-Root).
 # Basiert auf: AG München 142 C 9786/25 (13.02.2026),
+# OLG Düsseldorf 20 W 2/26 (2.4.2026) GRUR-RS 2026, 6153;
 # Leistner GRUR 2025, 1123; Olbrich/Bongers/Pampel GRUR 2022, 870;
 # Ory/Sorge NJW 2019, 710; EuGH C-604/10, C-683/17;
 # BGH "Birkenstocksandale" GRUR 2025, 407
@@ -69,8 +70,13 @@ The goal: the final result is the developer's "persönliche geistige Schöpfung"
 
 1. **Present alternatives**: "I see options A, B, C — which direction and why?"
    Always present at least 2 substantively different approaches for non-trivial
-   decisions. The developer's selection from alternatives is a protectable
-   creative act (AG München Rn. 19: "Selektionsprozess"; Dreyer HK-UrhR § 2 Rn. 32).
+   decisions. The developer's selection from alternatives is part of the
+   Selektionsprozess (AG München Rn. 19; Dreyer HK-UrhR § 2 Rn. 32), **but
+   selection alone is not enough**: OLG Düsseldorf 20 W 2/26 (2 Apr 2026)
+   clarified that "die bloße Auswahl eines KI-Erzeugnisses aus mehreren
+   Vorschlägen ist für sich genommen nicht ausreichend". Always capture the
+   *reasoning* — domain knowledge applied to the choice — not just which
+   option was picked.
 2. **Ask about design**: "Key decisions needed: X, Y, Z — your call."
 3. **Ask about trade-offs**: "This means X but costs Y — acceptable?"
 4. **Ask during implementation**: "About to do X — confirm or different approach?"
@@ -119,8 +125,8 @@ The [HUMAN] tag is the primary evidence under the Dominanztest. It MUST:
    - **REQUIREMENT** — what triggered the investigation (legal requirement, user need, DP feedback, architectural constraint)
    - **RESEARCH** — what was evaluated ("Evaluated X vs Y vs Z against [criteria]") — proof that research happened, not the full research itself
    - **DECISION** — what was chosen and why alternatives were rejected
-3. **Name at least one rejected alternative** — the *Selektionsprozess* (AG München Rn. 19) is the strongest single indicator of protectable contribution. No alternative documented = no selection = no protection.
-4. **State the reasoning** — why this option. Domain knowledge applied to a decision (compliance requirement, architectural constraint, UX principle) is protectable; generic approval is not.
+3. **Name at least one rejected alternative WITH reasoning** — the *Selektionsprozess* (AG München Rn. 19; Dreyer HK-UrhR § 2 Rn. 32) is *necessary but not sufficient*. Per OLG Düsseldorf 20 W 2/26 (2 Apr 2026): "Die bloße Auswahl eines KI-Erzeugnisses aus mehreren Vorschlägen ist für sich genommen nicht ausreichend." No alternative + reasoning = no protection.
+4. **State the reasoning — and make the *Prägung* visible** — why this option, and how the decision shapes the concrete artifact. OLG Düsseldorf requires "menschlich-schöpferische Einflussnahme auf die Gestaltung des konkreten Werkes selbst". Domain knowledge applied to a decision (compliance requirement, architectural constraint, UX principle) is protectable; generic approval is not. Where helpful, name the file/module/schema the decision shapes.
 5. **Use active verb form**:
    - "Chose X over Y because..." ✅
    - "Rejected X — would cause..." ✅
@@ -232,11 +238,11 @@ Commits then reference specific Decision Log entries (e.g., "see Decision Log D-
 ```markdown
 ## Decision Log
 
-| ID | Requirement | Options Evaluated | Decision | Reasoning |
-|----|------------|-------------------|----------|-----------|
-| D-1 | §203 requires encrypted client storage | (a) storage + CSE, (b) database native, (c) separate store | (a) storage + CSE | Native doesn't cover backups; (c) adds ops overhead without security uplift |
-| D-2 | Design partner feedback: email taxonomy (session 2026-03-16) | (a) flat tags, (b) hierarchical, (c) intent-based | (c) intent-based | Matches attorney mental model; flat tags don't capture urgency dimension |
-| D-3 | Multi-tenant isolation for playbook config | (a) per-org container, (b) shared container + partition key | (b) shared + partition | Consistent with existing document database pattern; per-org would require excessive resource overhead |
+| ID | Requirement | Options Evaluated | Decision | Reasoning | Shapes |
+|----|------------|-------------------|----------|-----------|--------|
+| D-1 | §203 requires encrypted client storage | (a) storage + CSE, (b) database native, (c) separate store | (a) storage + CSE | Native doesn't cover backups; (c) adds ops overhead without security uplift | storage adapter; blob container naming; CSE key handling |
+| D-2 | Design partner feedback: email taxonomy (session 2026-03-16) | (a) flat tags, (b) hierarchical, (c) intent-based | (c) intent-based | Matches attorney mental model; flat tags don't capture urgency dimension | classifier prompt; emails container `intent` enum; inbox filter UI |
+| D-3 | Multi-tenant isolation for playbook config | (a) per-org container, (b) shared container + partition key | (b) shared + partition | Consistent with existing document database pattern; per-org would require excessive resource overhead | playbooks container; partitionKey=organizationId; data-access layer |
 ```
 
 **Rules for the Decision Log:**
@@ -244,7 +250,8 @@ Commits then reference specific Decision Log entries (e.g., "see Decision Log D-
 - **Requirement** — what triggered the investigation: legal requirement, user need, DP feedback (with date/name), architectural constraint, performance requirement
 - **Options Evaluated** — minimum 2 substantive alternatives. This is the Selektionsprozess (AG München Rn. 19). One option is not a choice.
 - **Decision** — what was chosen
-- **Reasoning** — why this option, with domain knowledge. "Best practice" is not reasoning. "§203 mandates..." or "the design partner's workflow shows..." is.
+- **Reasoning** — why this option, with domain knowledge. "Best practice" is not reasoning. "§203 mandates..." or "the design partner's workflow shows..." is. Selection alone fails the test (OLG Düsseldorf 20 W 2/26).
+- **Shapes** — which concrete file, module, schema field, workflow ID, or API endpoint the decision shapes. Maps the Decision to the *konkretes Werk* (OLG Düsseldorf: "Gestaltung des konkreten Werkes selbst"). Empty Shapes = decision disconnected from artifact = weak evidence.
 
 **When the Decision Log carries the IP weight:**
 If a spec has a substantive Decision Log (≥2 entries with real alternatives),
@@ -337,9 +344,10 @@ Before finalizing any commit, Claude checks:
 - [ ] Commit message includes [HUMAN], [AI-ROLE], [IP-SCORE] tags
 - [ ] [HUMAN] tag: HIGH ≥40 words, MEDIUM ≥30 words (waived if spec has Decision Log)
 - [ ] [HUMAN] tag follows REQUIREMENT → RESEARCH → DECISION chain
-- [ ] [HUMAN] tag contains at least one rejected alternative and the reasoning
+- [ ] [HUMAN] tag contains at least one rejected alternative **with domain reasoning** (pure selection fails — OLG Düsseldorf 20 W 2/26)
+- [ ] [HUMAN] tag makes the *Prägung* visible — which artifact does the decision shape?
 - [ ] [CREATIVE-DECISIONS] lists specific choices (not generic descriptions)
-- [ ] If IP-SCORE is HIGH: spec or ADR with Decision Log exists or is being created
+- [ ] If IP-SCORE is HIGH: spec or ADR with Decision Log (incl. Shapes column) exists or is being created
 - [ ] If architecture changed: ARCHITECTURE.md update included
 - [ ] Monthly IP log entry drafted for today's work
 - [ ] No false IP claims (don't mark boilerplate as HIGH)
@@ -400,4 +408,7 @@ If challenged, the three-stage escalation applies:
 | "Auftrag an einen Designer" ≠ Schöpfung | AG München Rn. 22 | A brief/prompt is not creative work; the design decisions are |
 | Niedrigerer Schwellenwert für Software | § 69a Abs. 3 UrhG; OLG Köln 6 U 243/18 | "Eigene geistige Schöpfung" suffices — no classical "Schöpfungshöhe" |
 | Sammelwerkschutz | §§ 3, 4 UrhG | Selection and arrangement of elements protectable even if parts aren't |
-| Selektionsprozess | AG München Rn. 19; Dreyer HK-UrhR § 2 Rn. 32 | Selecting from AI alternatives based on expert judgment is creative work |
+| Selektionsprozess | AG München Rn. 19; Dreyer HK-UrhR § 2 Rn. 32 | Selecting from AI alternatives based on expert judgment is a building block — NOT sufficient on its own |
+| "Bloße Auswahl reicht nicht" | OLG Düsseldorf 20 W 2/26 (2 Apr 2026), GRUR-RS 2026, 6153 | Pure selection fails; reasoning + prägende Gestaltung required |
+| "Menschlich-schöpferische Einflussnahme auf Gestaltung des konkreten Werkes" | OLG Düsseldorf 20 W 2/26 | Decisions must shape the concrete artifact — hence the Shapes column in Decision Logs |
+| "Individuelle Voreinstellungen" + "sukzessive während des Promptings" | OLG Düsseldorf 20 W 2/26 | ARCHITECTURE.md + specs + iterative Rückfragen together satisfy this |

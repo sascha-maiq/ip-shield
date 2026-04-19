@@ -294,12 +294,36 @@ The absolute minimum (with Phase 1 active):
 
 Time investment: **~15 minutes per week** (Claude handles the rest).
 
+## Case-Law Update — OLG Düsseldorf 20 W 2/26 (2 Apr 2026)
+
+The Düsseldorf Higher Regional Court (GRUR-RS 2026, 6153) confirmed the
+Munich District Court's line and sharpened it on three points:
+
+1. **Copyright protection for AI-generated output IS possible** — "by
+   human intervention in AI results, also retrospective or *successive
+   during the prompting process*." Covers IP-SHIELD's Rückfragen-Pflicht
+   and iterative decision points.
+2. **"Sufficiently individual pre-settings in programming the generation
+   process"** are required. Covered by ARCHITECTURE.md + specs + Decision
+   Logs.
+3. **"The mere selection of an AI output from several suggestions is, on
+   its own, not sufficient."** ⚠️ The sharpest warning: listing rejected
+   alternatives without domain reasoning fails the test. IP-SHIELD's
+   REQUIREMENT → RESEARCH → DECISION chain plus the new **Shapes** column
+   in Decision Logs (which links the decision to the concrete artifact it
+   shapes) address this directly.
+
+The OLG case concerned a photographic work; **software still benefits from
+§ 69a(3) UrhG's lower threshold** ("eigene geistige Schöpfung"). The
+direction still applies.
+
 ## Legal Disclaimer
 
 This toolkit is not legal advice. It is based on the analysis of AG München
-142 C 9786/25, prevailing academic opinion (as of February 2026), and
-recommendations from specialized IP law firms. The legal landscape is evolving.
-For specific questions, consult an IP attorney.
+142 C 9786/25, OLG Düsseldorf 20 W 2/26 (GRUR-RS 2026, 6153), prevailing
+academic opinion (as of April 2026), and recommendations from specialized
+IP law firms. The legal landscape is evolving. For specific questions,
+consult an IP attorney.
 
 ---
 
@@ -561,12 +585,34 @@ Das absolute Minimum (wenn Phase 1 aktiv ist):
 
 Zeitaufwand: **~15 Minuten pro Woche** (Claude übernimmt den Rest).
 
+## Rechtsprechungs-Update — OLG Düsseldorf 20 W 2/26 (2.4.2026)
+
+Das OLG Düsseldorf (GRUR-RS 2026, 6153) bestätigt die Linie des AG München
+und präzisiert sie um drei Punkte:
+
+1. **Schutz ist bei KI-Erzeugnissen möglich** — "infolge menschlichen Eingriffs
+   in KI-Ergebnisse, der auch nachträglich bzw. sukzessive während des
+   Promptings stattfinden kann". Deckt die Rückfragen-Pflicht + iterative
+   Decision Points.
+2. **Erforderlich: "hinreichend individuelle Voreinstellungen bei der
+   Programmierung des Entstehungsprozesses"**. Deckt ARCHITECTURE.md +
+   Specs + Decision Logs.
+3. **"Die bloße Auswahl eines KI-Erzeugnisses aus mehreren Vorschlägen ist
+   für sich genommen nicht ausreichend."** ⚠️ Wichtigster Warnschuss:
+   rejected alternatives ohne Begründung reichen nicht. Antwort: REQ→RES→DEC
+   chain mit Begründung + neue **Shapes**-Spalte im Decision Log
+   (verknüpft Entscheidung und konkretes Werk).
+
+OLG-Fall war ein Lichtbildwerk; für **Software** gilt weiter die niedrigere
+Schwelle § 69a Abs. 3 UrhG. Die Richtung gilt dennoch.
+
 ## Rechtlicher Hinweis
 
 Dieses Toolkit ist kein Rechtsrat. Es basiert auf der Analyse von AG München
-142 C 9786/25, der h.M. in der Literatur (Stand Februar 2026) und den
-Empfehlungen diverser Fachkanzleien. Die Rechtslage entwickelt sich dynamisch.
-Für konkrete Fragen konsultiere einen IP-Anwalt.
+142 C 9786/25, OLG Düsseldorf 20 W 2/26 (GRUR-RS 2026, 6153), der h.M. in
+der Literatur (Stand April 2026) und den Empfehlungen diverser Fachkanzleien.
+Die Rechtslage entwickelt sich dynamisch. Für konkrete Fragen konsultiere
+einen IP-Anwalt.
 
 ---
 
